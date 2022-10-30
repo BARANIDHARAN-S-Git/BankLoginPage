@@ -1,0 +1,190 @@
+GithubLink:https://github.com/BARANIDHARAN-S-Git/BankLoginPage
+--------------------------BankController.cs-------------------
+using BankLoginPage.Models;
+using Microsoft.AspNetCore.Mvc;
+
+namespace BankLoginPage.Controllers
+{
+    [Route("Bank")]
+    public class BankController : Controller
+    {
+        private BankService BankService;
+        public BankController(BankService _BankService)
+        {
+            BankService = _BankService;
+        }
+
+        [Route("")]
+        [Route("~/")]
+        [Route("index")]
+        public IActionResult Index()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [Route("login")]
+        public IActionResult Login(string UserName,string Password)
+        {
+            var account=BankService.Login(UserName, Password);
+            if(account != null)
+            {
+                HttpContext.Session.SetString("UserName", UserName);
+                return RedirectToAction("Welcome");
+            }
+            else
+            {
+                ViewBag.msg = "Invalid";
+                return View("Index");
+            }
+        }
+
+        [Route("Welcome")]
+
+        public IActionResult Welcome()
+        {
+            ViewBag.username = HttpContext.Session.GetString("username");
+            return View("Welcome");
+        }
+
+        [Route("Logout")]
+
+        public IActionResult Logout()
+        {
+           HttpContext.Session.Remove("username");
+            return View("Index");
+        }
+    }
+}
+
+----------------------------Bank.cs----------------------------
+namespace BankLoginPage.Models
+{
+    public class Bank
+    {
+        public string UserName { get; set; }
+        public string Password { get; set; }
+
+        public string FullName { get; set; }
+    }
+}
+----------------------------BankService.cs--------------------
+namespace BankLoginPage.Models
+{
+    public interface BankService
+    {
+        public Bank Login(string username, string password);
+    }
+}
+------------------------ErrorViewModel.cs---------------------
+namespace BankLoginPage.Models
+{
+    public class ErrorViewModel
+    {
+        public string? RequestId { get; set; }
+
+        public bool ShowRequestId => !string.IsNullOrEmpty(RequestId);
+    }
+}
+--------------------------BankServiceImpl.cs----------------------
+using BankLoginPage.Models;
+
+namespace BankLoginPage.Service
+{
+    public class BankServiceImpl : BankService
+    {
+        private List<Bank> _accounts;
+
+        public BankServiceImpl()
+        {
+            _accounts = new List<Bank>
+            {
+                new Bank
+                {
+                    UserName="Buttler",
+                    Password="abc",
+                    FullName="JosButtler"
+                },
+                 new Bank
+                {
+                    UserName="Samson",
+                    Password="def",
+                    FullName="SanjuSamson"
+                },
+                 new Bank
+                {
+                    UserName="Dhoni",
+                    Password="ghi",
+                    FullName="MahendraSinghDhoni"
+                }
+            };
+
+        }
+        public Bank Login(string username, string password)
+        {
+            return _accounts.SingleOrDefault(a => a.UserName == username && a.Password == password);
+        }
+    }
+}
+-------------------------------Index.cshtml-----------------------
+<body style="color:rebeccapurple;background-color:aqua;text-align:center;">
+  
+<h3 >BankLogin</h3>
+@ViewBag.msg
+
+<form method="post" asp-controller="Bank" asp-action="Login">
+    UserName:<input  type="text" name="UserName"/>
+    <br />
+    <br />
+       
+    
+    Password:<input type="password" name="password"/>
+    <br />
+        <br />
+    <input type="submit" value="Login"/>
+
+</form>
+</body>
+---------------------------------Welcome.cshtml--------------
+<h1>Welcome </h1>
+
+<br />
+<h6>DashBoard</h6>:
+<a asp-controller="Bank" asp-action="logout">Logout</a>
+--------------------------Program.cs----------------------
+using BankLoginPage.Models;
+using BankLoginPage.Service;
+
+var builder = WebApplication.CreateBuilder(args);
+
+// Add services to the container.
+builder.Services.AddControllersWithViews();
+
+builder.Services.AddSession();
+
+builder.Services.AddScoped<BankService, BankServiceImpl>();
+
+var app = builder.Build();
+
+app.UseSession();
+
+// Configure the HTTP request pipeline.
+if (!app.Environment.IsDevelopment())
+{
+    app.UseExceptionHandler("/Home/Error");
+    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+    app.UseHsts();
+}
+
+app.UseHttpsRedirection();
+app.UseStaticFiles();
+
+app.UseRouting();
+
+app.UseAuthorization();
+
+app.MapControllerRoute(
+    name: "default",
+    pattern: "{controller=Home}/{action=Index}/{id?}");
+
+app.Run();

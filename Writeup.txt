@@ -1,0 +1,21 @@
+GithubLink:https://github.com/BARANIDHARAN-S-Git/BankLoginPage
+----------------------------------------------------------------------
+1)Create a ASP.NetCore Application.
+
+2)Create a controller to write the IActionResult for Index,Login,Welcome and Logout.
+
+3)Create a Model with the necessary Properties.
+
+4)Create a Service for giving values to check with the user Input.
+
+5)In View create a two .cshtml for the design.
+
+6)Open the command prompt and give the path of the File Location,and write dockerlogin command for login.
+
+7)Write Build Command To create Images.
+
+8)Write the Run Command to run. 
+
+9)The image and the container is created in the docker.
+
+10)Now Open the URL int the Browser,We can see the Output in the browser.
