@@ -1,0 +1,18 @@
+﻿<body style="color:rebeccapurple;background-color:aqua;text-align:center;">
+  
+<h3 >BankLogin</h3>
+@ViewBag.msg
+
+<form method="post" asp-controller="Bank" asp-action="Login">
+    UserName:<input  type="text" name="UserName"/>
+    <br />
+    <br />
+       
+    
+    Password:<input type="password" name="password"/>
+    <br />
+        <br />
+    <input type="submit" value="Login"/>
+
+</form>
+</body>

@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "srU0+CnTX8SePm36PyH1Q4gdx8eru8BydG/LX46oZSQY9Wytz8AWxUqdtHrx9brIn1hpkOcVZp+SVvLifvdopw==",
+  "success": true,
+  "projectFilePath": "C:\\newvs\\BankLoginPage\\BankLoginPage\\BankLoginPage.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\Lenovo\\.nuget\\packages\\microsoft.visualstudio.azure.containers.tools.targets\\1.17.0\\microsoft.visualstudio.azure.containers.tools.targets.1.17.0.nupkg.sha512"
+  ],
+  "logs": []
+}
